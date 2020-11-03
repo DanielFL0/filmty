@@ -1,5 +1,6 @@
 venv/
-__pycache__/
+filmty/__pycache__/
+films/__pycache__/
 settings.py
 migrations/
 media/
