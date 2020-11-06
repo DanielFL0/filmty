@@ -18,24 +18,22 @@
 
 <body class="bg-secondary">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Filmty</a>
+        <a class="navbar-brand" href="{% url 'films:index' %}">Filmty</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'films:index' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Movies</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Template</a>
+                    <a class="nav-link" href="{% url 'films:catalog' %}">Movies</a>
                 </li>
             </ul>
         </div>
+        <a class="btn btn-outline-light" href="{% url 'films:login' %}">Cuenta</a>
     </nav>
     <div class="media pl-3 pt-3">
         <img src="{{ movie.thumbnail.url }}" class="img-thumbnail" alt="image" width="150" height="150">
@@ -55,10 +53,9 @@
     <h3 class="text-white">Comentarios</h3>
     {% for review in reviews %}
     <div class="media pl-3 pt-3">
-        <img src="{{ review.user.profile_picture.url }}" class="img-thumbnail" alt="image" width="100" height="100">
+        <img src="{{ review.user.forumuser.profile_picture.url }}" class="img-thumbnail" alt="image" width="100" height="100">
         <div class="media-body pl-3">
-            <h5 class="mt-0 text-white">{{ review.user }}</h5>
-            <p class="text-white"><strong>{{ movie.description }}</strong></p>
+            <h5 class="mt-0 text-white"><strong>{{ review.user.username }}</strong></h5>
             <p class="text-white">{{ review.content }}</p>
             <p class="text-white">{{ review.date_published }}</p>
         </div>
