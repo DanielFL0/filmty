@@ -7,11 +7,19 @@ class ForumUser(models.Model):
     profile_picture = models.FileField(upload_to='profile_pictures')
 
     def __str__(self):
-        return self.username
+        return self.user.username
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Movie(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
+    category = models.ManyToManyField(Category)
     release_date = models.DateTimeField('release date')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thumbnail = models.FileField(upload_to='thumbnails')
