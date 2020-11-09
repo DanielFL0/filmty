@@ -33,7 +33,11 @@
                 </li>
             </ul>
         </div>
-        <a class="btn btn-outline-light" href="{% url 'films:login' %}">Cuenta</a>
+        {% if logged_in %}
+            <a href="{% url 'films:profile' user.id %}"><img src="{{ user.forumuser.profile_picture.url }}" height="32px" width="32px"></a>
+        {% else %}
+            <a class="btn btn-outline-light" href="{% url 'films:login' %}">Iniciar sesion</a>
+        {% endif %}
     </nav>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -44,6 +48,18 @@
     <h3>Recien agregadas</h3>
     <div class="d-flex justify-content-start">
         {% for movie in latest_movies_list %}
+        <div class="card" style="width: 13rem;">
+            <img src="{{ movie.thumbnail.url }}" class="card-img-top" height="200" width="100">
+            <div class="card-body">
+                <h5 class="card-title"><a href="{% url 'films:movie' movie.id%}">{{ movie.name }}</a></h5>
+                <p class="card-text">{{ movie.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <h3 class="pt-2">Peliculas de accion</h3>
+    <div class="d-flex justify-content-start">
+        {% for movie in action_movies_list %}
         <div class="card" style="width: 13rem;">
             <img src="{{ movie.thumbnail.url }}" class="card-img-top" height="200" width="100">
             <div class="card-body">

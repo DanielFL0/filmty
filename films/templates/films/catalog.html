@@ -29,11 +29,16 @@
                     <a class="nav-link" href="{% url 'films:index' %}">Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'films:catalog' %}">Movies <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'films:catalog' %}">Movies <span
+                            class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>
-        <a class="btn btn-outline-light" href="{% url 'films:login' %}">Cuenta</a>
+        {% if logged_in %}
+            <a href="{% url 'films:profile' user.id %}"><img src="{{ user.forumuser.profile_picture.url }}" height="32px" width="32px"></a>
+        {% else %}
+            <a class="btn btn-outline-light" href="{% url 'films:login' %}">Iniciar sesion</a>
+        {% endif %}
     </nav>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -44,7 +49,23 @@
             </form>
         </div>
     </div>
-    <h3>Peliculas</h3>
+    <div class="d-flex justify-content-between">
+        <h3>Peliculas</h3>
+        <div class="btn-group pr-2">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                Categorias
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <form method="POST">
+                {% csrf_token %}
+                {% for category in categories %}
+                    <button type="submit" class="dropdown-item" name="category" id="{{ category.name }}" value="{{ category.name }}">{{ category.name }}</button>
+                {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="d-flex flex-row justify-content-start flex-wrap">
         {% for movie in latest_movies_list %}
         <div class="card" style="width: 13rem;">

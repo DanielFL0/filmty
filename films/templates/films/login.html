@@ -33,7 +33,11 @@
                 </li>
             </ul>
         </div>
-        <a class="btn btn-outline-light" href="{% url 'films:login' %}">Cuenta</a>
+        {% if logged_in %}
+        <a class="btn btn-outline-light" href="{% url 'films:profile' user.id %}">Perfil</a>
+        {% else %}
+        <a class="btn btn-outline-light" href="{% url 'films:login' %}">Iniciar sesion</a>
+        {% endif %}
     </nav>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -41,20 +45,22 @@
             <p class="lead">Unete a la comunidad mas grande del cine amateur.</p>
         </div>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="exampleInputEmail1">Nombre de usuario</label>
-          <input type="text" class="form-control" name='username' id="username" placeholder="Example input placeholder">
-          <small id="emailHelp" class="form-text text-muted">Cuidamos bien tus datos ;)</small>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" name='password' id="password">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <small id="signupHelp" class="form-text text-muted">No tienes una cuenta? <a href="{% url 'films:register' %}">Registrate!</a></small>
-    </form>
+    <div class="d-flex justify-content-start pl-5">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">Nombre de usuario</label>
+                <input type="text" class="form-control" name='username' id="username">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" name='password' id="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <small id="signupHelp" class="form-text text-muted">No tienes una cuenta? <a
+                    href="{% url 'films:register' %}">Registrate!</a></small>
+        </form>
+    </div>
 </body>
 
 </html>

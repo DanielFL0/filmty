@@ -16,7 +16,7 @@
     <title>Filmty</title>
 </head>
 
-<body class="bg-secondary">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'films:index' %}">Filmty</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -25,50 +25,47 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'films:index' %}">Home</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'films:index' %}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'films:catalog' %}">Movies</a>
                 </li>
             </ul>
         </div>
+        {% if logged_in %}
         <a href="{% url 'films:profile' user.id %}"><img src="{{ user.forumuser.profile_picture.url }}" height="32px"
                 width="32px"></a>
+        {% else %}
+        <a class="btn btn-outline-light" href="{% url 'films:login' %}">Iniciar sesion</a>
+        {% endif %}
     </nav>
-    <div class="d-flex justify-content-between">
-        <div class="media">
-            <img src="{{ requested_user.forumuser.profile_picture.url }}" class="img-thumbnail" alt="image" width="100"
-                height="100">
-            <div class="media-body pl-2">
-                <h5 class="mt-0 text-white">{{ requested_user.username }}</h5>
-                <p class="text-white">{{ requested_user.first_name }} {{ requested_user.last_name }}</p>
+    <h3>Agregar una pelicula</h3>
+    <div class="d-flex justify-content-start pl-5">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInput">Nombre de la pelicula</label>
+                <input type="text" class="form-control" name="name" id="name">
             </div>
-        </div>
-        <div class="p-2">
-            {% if is_own_profile %}
-            <a class="btn btn-danger" href="{% url 'films:logout' %}">Cerrar sesion</a>
-            {% endif %}
-        </div>
-    </div>
-    <div class="d-flex justify-content-between">
-        <h3 class="text-white">Recien agregadas</h3>
-        <div class="p-2">
-            {% if is_own_profile %}
-            <a class="btn btn-light" href="{% url 'films:logout' %}">+</a>
-            {% endif %}
-        </div>
-    </div>
-    <div class="d-flex justify-content-start">
-        {% for movie in movies %}
-        <div class="card" style="width: 13rem;">
-            <img src="{{ movie.thumbnail.url }}" class="card-img-top" height="200" width="100">
-            <div class="card-body">
-                <h5 class="card-title"><a href="{% url 'films:movie' movie.id%}">{{ movie.name }}</a></h5>
-                <p class="card-text">{{ movie.description }}</p>
+            <div class="form-group">
+                <label for="exampleInput">Descripcion</label>
+                <input type="text" class="form-control" name="description" id="description">
             </div>
-        </div>
-        {% endfor %}
+            <div class="form-group">
+                <label for="exampleInput">Category</label>
+                <input type="text" class="form-control" name="category" id="category">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Portada</label>
+                <input type="file" class="form-control-file" name="thumbnail" id="thumbnail">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Video</label>
+                <input type="file" class="form-control-file" name="video" id="video">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
 </body>
 
