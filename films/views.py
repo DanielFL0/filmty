@@ -14,9 +14,7 @@ def index(request):
         logged_in = True
         user = request.user
     latest_movies_list = Movie.objects.order_by('release_date')[:8]
-    action = Category.objects.get(name='action')
-    action_movies_list = Movie.objects.all().filter(category=action)
-    context = {'latest_movies_list': latest_movies_list, 'action_movies_list': action_movies_list, 'logged_in': logged_in, 'user': user}
+    context = {'latest_movies_list': latest_movies_list, 'logged_in': logged_in, 'user': user}
     return render(request, 'films/index.html', context)
 
 def catalog(request):
@@ -43,10 +41,6 @@ def movie(request, movie_id):
     context = {'movie': movie_result, 'categories': categories, 'reviews': reviews, 'user': user}
     return render(request, 'films/movie.html', context)
 
-# @login_required(login_url='/films/login/')
-# def add_review(request, movie_id):
-
-
 @login_required(login_url='/films/login/')
 def add_movie(request, user_id):
     if request.method == 'POST':
@@ -62,7 +56,18 @@ def add_movie(request, user_id):
         movie.save()
         movie.category.add(cat)
     return render(request, 'films/add_movie.html')
-    
+
+@login_required(login_url='/films/login/')
+def add_review(request, movie_id):
+    movie = Movie.objects.get(pk=movie_id)
+    user = request.user
+    date_published = datetime.now()
+    if request.method == 'POST':
+        content = request.POST['content']
+        review = Review(content=content, date_published=date_published, user=user, movie=movie)
+        review.save()
+    return render(request, 'films/add_review.html')
+         
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
